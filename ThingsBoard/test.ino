@@ -34,12 +34,25 @@ RPC_Response setLedSwitchState(RPC_Data &data)
 }
 bool subscribed = false;
 
+RPC_Response getButtonStatus()
+{
+  if(digitalRead(button_pin)==HIGH){
+    return RPC_Response("getButtonState", true);
+  }
+  else{
+    return RPC_Response("getButtonState", false);
+  }
+}
+
 const std::array<RPC_Callback, 1U> cb = {
+    RPC_Callback{"getButtonState",    getButtonStatus },
     RPC_Callback("setLedSwitchValue", setLedSwitchState)};
 
 void setup()
 {
     Serial.begin(115200);
+    pinMode(26, OUTPUT);
+    digitalWrite(25, HIGH);
     pinMode(button_pin, INPUT);
     pinMode(led_pin, OUTPUT);
     WiFi.begin(WIFI_AP, WIFI_PSWD, 6);
