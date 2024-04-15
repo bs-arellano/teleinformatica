@@ -2,11 +2,11 @@
 #include <Arduino_MQTT_Client.h>
 #include <ThingsBoard.h>
 
-#define WIFI_AP "Wokwi-GUEST"
-#define WIFI_PSWD ""
+#define WIFI_AP "Jhon"
+#define WIFI_PSWD "idyc5760"
 
 #define TB_SERVER "demo.thingsboard.io"
-#define TOKEN "zuul0uh30jvue3xap4pu"
+#define TOKEN "80e8b0so6joockm08js0"
 
 #define led_pin 13
 #define button_pin 14
@@ -15,6 +15,7 @@ WiFiClient wifiClient;
 Arduino_MQTT_Client mqttClient(wifiClient);
 ThingsBoardSized<32> tb(mqttClient, 128);
 int led_state = 0;
+bool buttonState = false;
 
 RPC_Response setLedSwitchState(RPC_Data &data)
 {
@@ -93,13 +94,17 @@ void loop()
       subscribed = true;
     }
   }
+
   if (tb.connected() && subscribed) {
-    if (digitalRead(button_pin) == HIGH) {
+    if (digitalRead(button_pin) == HIGH && !buttonState) {
       tb.sendTelemetryData("buttonState", true);
+      buttonState=true;
     }
-    else {
+    else if (digitalRead(button_pin) == LOW && buttonState){
       tb.sendTelemetryData("buttonState", false);
+      buttonState=false;
     }
   }
-  tb.loop();
+  
+  tb.loop();
 }
