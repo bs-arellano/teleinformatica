@@ -2,8 +2,8 @@
 #include <Arduino_MQTT_Client.h>
 #include <ThingsBoard.h>
 
-#define WIFI_AP "Jhon"
-#define WIFI_PSWD "idyc5760"
+#define WIFI_AP "esp32"
+#define WIFI_PSWD "esp32wifi"
 
 #define TB_SERVER "demo.thingsboard.io"
 #define TOKEN "80e8b0so6joockm08js0"
